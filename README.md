@@ -24,23 +24,32 @@ Este sistema foi desenvolvido para auxiliar no controle e gerenciamento de pront
 ### Gerenciamento de Pacientes
 - ✅ Cadastro de novos pacientes
 - ✅ Listagem de pacientes com busca e filtros
-- ✅ Visualização detalhada do prontuário
+- ✅ Visualização detalhada do paciente
 - ✅ Edição de dados do paciente
 - ✅ Exclusão de pacientes
 - ✅ Busca por nome ou endereço
 
-### Informações Coletadas
-- **Dados Pessoais**: Nome, idade, data de nascimento, endereço
-- **Atividade Física**: Frequência, tempo de atividade, locais de prática
-- **Informações do Projeto**: Como soube do projeto, deslocamento, opinião sobre horários
+### Gerenciamento de Prontuários
+- ✅ Criação de prontuários médicos para pacientes
+- ✅ Visualização detalhada de prontuários
+- ✅ **NOVO**: Edição de prontuários existentes
+- ✅ Exclusão de prontuários
+- ✅ Listagem de prontuários por paciente
+- ✅ Navegação integrada entre pacientes e prontuários
+
+### Informações Coletadas nos Prontuários
+- **Dados Pessoais**: Nome, idade, data de nascimento, endereço (automaticamente do paciente)
+- **Atividade Física**: Frequência, tempo de atividade, locais de prática, tipo de deslocamento
+- **Informações do Projeto**: Como soube do projeto, opinião sobre horários de aplicação
 - **Dados Médicos**: Histórico médico, evolução de saúde, pressão arterial, ausculta
 - **Observações**: Campo livre para anotações adicionais
 
 ### Interface Responsiva
 - 📱 Otimizado para dispositivos móveis (celulares e tablets)
 - 💻 Funciona perfeitamente em desktops e notebooks
-- 🖨️ Função de impressão de prontuários
-- 🔍 Busca em tempo real
+- � Busca em tempo real
+- 🎨 **NOVO**: Menu de navegação padronizado em todas as páginas
+- � Acesso às estatísticas do sistema
 
 ## 🛠️ Como Executar
 
@@ -92,16 +101,53 @@ O frontend estará disponível em: `http://localhost:8080`
 - Ordene por nome, data de cadastro ou idade
 - Use os botões de ação para visualizar, editar ou excluir
 
-### 4. Visualizar Detalhes
-- Clique no ícone "👁️" na lista de pacientes
-- Visualize todas as informações do prontuário
-- Use o botão "Imprimir" para gerar versão física
-- Acesse "Editar" para modificar os dados
+### 4. Visualizar Detalhes do Paciente
+- Clique no ícone "👁️" na lista de pacientes ou acesse diretamente
+- Visualize todas as informações pessoais do paciente
+- Veja a lista completa de prontuários médicos do paciente
+- Use os botões de ação para cada prontuário:
+  - 👁️ **Visualizar**: Ver detalhes completos do prontuário
+  - ✏️ **Editar**: Modificar informações do prontuário
+  - 🗑️ **Deletar**: Remover prontuário (com confirmação)
+- Acesse "Editar" para modificar dados pessoais do paciente
+- Crie novos prontuários diretamente da página do paciente
 
-### 5. Editar Paciente
-- Modifique os campos necessários
+### 5. **NOVO**: Editar Prontuários
+- Clique no botão "Editar" (✏️) em qualquer prontuário
+- Página de edição carrega automaticamente os dados existentes
+- Modifique qualquer campo do prontuário:
+  - Informações de atividade física
+  - Dados médicos (pressão arterial, ausculta, histórico)
+  - Observações e informações adicionais
+- Visualize informações do paciente (somente leitura)
+- Clique em "Salvar Alterações" para confirmar
+- Retorna automaticamente para a página do paciente
+
+### 6. Criar Prontuários
+- Acesse via botão "Novo Prontuário" na página do paciente
+- Ou navegue diretamente pelo menu para "Criar Prontuário"
+- Selecione o paciente (pré-selecionado se vier da página do paciente)
+- Preencha as informações médicas e de atividade física
+- Salve para criar o novo prontuário
+
+### 7. Visualizar Prontuários
+- Clique no ícone "👁️" em qualquer prontuário
+- Veja todas as informações detalhadas
+- Informações organizadas por categorias
+- Navegação clara de volta ao paciente
+
+### 8. Editar Paciente
+- Modifique os campos necessários dos dados pessoais
 - Use "Restaurar Dados" para reverter alterações
 - Clique em "Salvar Alterações" para confirmar
+
+### 9. **NOVO**: Navegação Integrada
+- Menu padronizado em todas as páginas com:
+  - 🏠 **Início**: Dashboard principal
+  - 👥 **Pacientes**: Lista e gerenciamento de pacientes  
+  - 📊 **Estatísticas**: Estatísticas do sistema
+- Navegação fluida entre pacientes e prontuários
+- Botões "Voltar" inteligentes que retornam ao contexto anterior
 
 ## 🔧 Configuração
 
@@ -121,6 +167,14 @@ A API está configurada para aceitar requisições de qualquer origem durante o 
 - `DELETE /api/pacientes/{id}` - Excluir paciente
 - `GET /api/pacientes/search?termo={termo}` - Buscar pacientes
 
+### Prontuários
+- `GET /api/prontuarios` - Listar todos os prontuários
+- `GET /api/prontuarios/{id}` - Obter prontuário por ID
+- `GET /api/prontuarios/paciente/{pacienteId}` - Listar prontuários de um paciente
+- `POST /api/prontuarios` - Criar novo prontuário
+- `PUT /api/prontuarios/{id}` - **NOVO**: Atualizar prontuário existente
+- `DELETE /api/prontuarios/{id}` - Excluir prontuário
+
 ## 🔒 Segurança
 
 ### Para Produção
@@ -137,18 +191,29 @@ A API está configurada para aceitar requisições de qualquer origem durante o 
 app-eprontuario/
 ├── ProntuarioMedico.Api/          # Backend .NET
 │   ├── Controllers/               # Controladores da API
+│   │   ├── PacientesController.cs # Endpoints de pacientes
+│   │   └── ProntuariosController.cs # Endpoints de prontuários
 │   ├── Data/                     # Contexto do banco
 │   ├── DTOs/                     # Data Transfer Objects
 │   ├── Models/                   # Modelos de dados
+│   ├── Migrations/               # Migrações do banco de dados
 │   └── Program.cs                # Configuração da aplicação
 │
 ├── ProntuarioMedico.Web/         # Frontend
 │   ├── js/                       # Scripts JavaScript
+│   │   ├── criar-prontuario.js   # Lógica de criação de prontuários
+│   │   ├── editar-prontuario.js  # **NOVO**: Lógica de edição de prontuários
+│   │   ├── detalhes-paciente.js  # Lógica de detalhes do paciente
+│   │   └── ...                   # Outros scripts
 │   ├── index.html                # Dashboard principal
 │   ├── pacientes.html            # Lista de pacientes
-│   ├── novo-paciente.html        # Cadastro
-│   ├── detalhes-paciente.html    # Visualização
-│   ├── editar-paciente.html      # Edição
+│   ├── novo-paciente.html        # Cadastro de pacientes
+│   ├── detalhes-paciente-simples.html # Visualização de paciente
+│   ├── editar-paciente-simples.html   # Edição de paciente
+│   ├── criar-prontuario.html     # Criação de prontuários
+│   ├── editar-prontuario.html    # **NOVO**: Edição de prontuários
+│   ├── detalhes-prontuario.html  # Visualização de prontuários
+│   ├── estatisticas-simples.html # Estatísticas do sistema
 │   └── styles.css                # Estilos customizados
 │
 └── README.md                     # Este arquivo
@@ -157,13 +222,35 @@ app-eprontuario/
 ## 🎯 Próximos Passos
 
 - [ ] Implementar autenticação de usuários
-- [ ] Adicionar relatórios e estatísticas
+- [ ] Adicionar relatórios e estatísticas avançadas
 - [ ] Exportação de dados em PDF
 - [ ] Agendamento de consultas
-- [ ] Histórico de alterações
+- [ ] Histórico de alterações em prontuários
 - [ ] Backup automático
 - [ ] Notificações
 - [ ] App mobile nativo
+- [ ] Filtros avançados na listagem de prontuários
+- [ ] Dashboard com gráficos interativos
+
+## 🆕 Atualizações Recentes (v2.0)
+
+### ✨ Novas Funcionalidades
+- **Edição de Prontuários**: Agora é possível editar prontuários existentes
+- **Navegação Integrada**: Menu padronizado em todas as páginas
+- **Interface Aprimorada**: Melhor fluxo de navegação entre pacientes e prontuários
+
+### 🔧 Melhorias Técnicas
+- Novo endpoint PUT para atualização de prontuários
+- Script JavaScript dedicado para edição (`editar-prontuario.js`)
+- Validação aprimorada de formulários
+- Tratamento robusto de erros
+- Feedback visual com toasts de sucesso/erro
+
+### 🎨 Melhorias de UX/UI
+- Menu de navegação consistente em todas as páginas
+- Botões "Voltar" inteligentes que retornam ao contexto anterior
+- Informações do paciente visíveis durante edição de prontuários
+- Loading states e feedback visual aprimorados
 
 ## 👥 Contribuição
 
