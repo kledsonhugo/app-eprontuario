@@ -1,0 +1,177 @@
+// Configuração da API
+const API_BASE_URL = 'http://localhost:5135/api';
+
+// Elementos do DOM
+const loading = document.getElementById('loading');
+const erro = document.getElementById('erro');
+const mensagemErro = document.getElementById('mensagemErro');
+const formProntuario = document.getElementById('formProntuario');
+const btnSalvar = document.getElementById('btnSalvar');
+const selectPaciente = document.getElementById('pacienteId');
+
+// Carregar dados iniciais ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    carregarPacientes();
+    
+    // Configurar formulário
+    formProntuario.addEventListener('submit', salvarProntuario);
+});
+
+// Função para carregar lista de pacientes
+async function carregarPacientes() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/pacientes`);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ${response.status}: ${response.statusText}`);
+        }
+        
+        const pacientes = await response.json();
+        
+        // Limpar select
+        selectPaciente.innerHTML = '<option value="">Selecione um paciente</option>';
+        
+        // Adicionar opções
+        pacientes.forEach(paciente => {
+            const option = document.createElement('option');
+            option.value = paciente.id;
+            option.textContent = `${paciente.nome} (${paciente.idade} anos - ${paciente.cidade}/${paciente.estado})`;
+            selectPaciente.appendChild(option);
+        });
+        
+        // Verificar se há um pacienteId na URL (caso venha da página de pacientes)
+        const urlParams = new URLSearchParams(window.location.search);
+        const pacienteId = urlParams.get('pacienteId');
+        if (pacienteId) {
+            selectPaciente.value = pacienteId;
+        }
+        
+    } catch (error) {
+        console.error('Erro ao carregar pacientes:', error);
+        selectPaciente.innerHTML = '<option value="">Erro ao carregar pacientes</option>';
+        mostrarErro(`Erro ao carregar pacientes: ${error.message}`);
+    }
+}
+
+// Função para salvar o prontuário
+async function salvarProntuario(event) {
+    event.preventDefault();
+    
+    try {
+        // Validar formulário
+        if (!formProntuario.checkValidity()) {
+            formProntuario.classList.add('was-validated');
+            return;
+        }
+        
+        // Desabilitar botão e mostrar loading
+        btnSalvar.disabled = true;
+        btnSalvar.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Salvando...';
+        esconderErro();
+        
+        // Preparar dados
+        const formData = new FormData(formProntuario);
+        const dadosProntuario = {
+            pacienteId: parseInt(formData.get('pacienteId')),
+            frequenciaAtividade: formData.get('frequenciaAtividade') || '',
+            tempoAtividade: formData.get('tempoAtividade') || '',
+            locaisPraticaAtividade: formData.get('locaisPraticaAtividade') || '',
+            comoSoubeProjeto: formData.get('comoSoubeProjeto') || '',
+            tipoDeslocamento: formData.get('tipoDeslocamento') || '',
+            opiniaoHorarioAplicacao: formData.get('opiniaoHorarioAplicacao') || '',
+            historicoMedico: formData.get('historicoMedico') || '',
+            evolucaoSaude: formData.get('evolucaoSaude') || '',
+            pressao: formData.get('pressao') || '',
+            ausculta: formData.get('ausculta') || '',
+            observacoes: formData.get('observacoes') || ''
+        };
+        
+        // Enviar para a API
+        const response = await fetch(`${API_BASE_URL}/prontuarios`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dadosProntuario)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Erro ${response.status}: ${errorData || response.statusText}`);
+        }
+        
+        const prontuarioCriado = await response.json();
+        
+        // Mostrar sucesso e redirecionar
+        mostrarSucesso('Prontuário criado com sucesso!');
+        
+        setTimeout(() => {
+            const pacienteId = dadosProntuario.pacienteId;
+            window.location.href = `detalhes-paciente-simples.html?id=${pacienteId}`;
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Erro ao salvar prontuário:', error);
+        mostrarErro(`Erro ao salvar prontuário: ${error.message}`);
+    } finally {
+        // Reabilitar botão
+        btnSalvar.disabled = false;
+        btnSalvar.innerHTML = '<i class="fas fa-save me-2"></i>Salvar Prontuário';
+    }
+}
+
+// Funções de controle de interface
+function mostrarErro(mensagem) {
+    mensagemErro.textContent = mensagem;
+    erro.classList.remove('d-none');
+    erro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function esconderErro() {
+    erro.classList.add('d-none');
+}
+
+function mostrarSucesso(mensagem) {
+    // Criar toast de sucesso
+    const toast = document.createElement('div');
+    toast.className = 'toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-3';
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="fas fa-check-circle me-2"></i>
+                ${mensagem}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+    
+    // Remover o toast após ser escondido
+    toast.addEventListener('hidden.bs.toast', () => {
+        document.body.removeChild(toast);
+    });
+}
+
+// Validação em tempo real
+document.addEventListener('input', function(event) {
+    if (event.target.matches('input, select, textarea')) {
+        event.target.classList.remove('is-invalid');
+        if (event.target.checkValidity()) {
+            event.target.classList.add('is-valid');
+        }
+    }
+});
+
+// Validar seleção de paciente
+selectPaciente.addEventListener('change', function() {
+    if (this.value) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+    } else {
+        this.classList.remove('is-valid');
+    }
+});

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Paciente - Sistema de Prontuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-heartbeat me-2"></i>
+                Sistema de Prontuários
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bars"></i> Menu
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.html"><i class="fas fa-home me-2"></i>Início</a></li>
+                            <li><a class="dropdown-item active" href="pacientes.html"><i class="fas fa-users me-2"></i>Pacientes</a></li>
+                            <li><a class="dropdown-item" href="estatisticas-simples.html"><i class="fas fa-chart-bar me-2"></i>Estatísticas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+                            <i class="bi bi-person-plus"></i> Novo Paciente
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 id="pageTitle">
+                        <i class="bi bi-person-circle"></i>
+                        Detalhes do Paciente
+                    </h2>
+                    <div class="btn-group">
+                        <a href="pacientes.html" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                            Voltar
+                        </a>
+                        <button id="editBtn" class="btn btn-warning" style="display: none;">
+                            <i class="bi bi-pencil"></i>
+                            Editar
+                        </button>
+                        <button id="deleteBtn" class="btn btn-danger" style="display: none;">
+                            <i class="bi bi-trash"></i>
+                            Excluir
+                        </button>
+                        <button id="printBtn" class="btn btn-info" style="display: none;">
+                            <i class="bi bi-printer"></i>
+                            Imprimir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Details -->
+        <div id="patientDetails" style="display: none;">
+            <!-- Dados Pessoais -->
+            <div class="form-container">
+                <div class="form-section">
+                    <h4>
+                        <i class="bi bi-person"></i>
+                        Dados Pessoais
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Nome Completo:</label>
+                            <p id="nome" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Idade:</label>
+                            <p id="idade" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Data de Nascimento:</label>
+                            <p id="dataNascimento" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label fw-bold">Rua/Avenida:</label>
+                            <p id="rua" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Número:</label>
+                            <p id="numero" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Complemento:</label>
+                            <p id="complemento" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Bairro:</label>
+                            <p id="bairro" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Cidade:</label>
+                            <p id="cidade" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Estado:</label>
+                            <p id="estado" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações de Atividade Física -->
+                <div class="form-section">
+                    <h4>
+                        <i class="bi bi-activity"></i>
+                        Informações de Atividade Física
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Frequência de Atividade:</label>
+                            <p id="frequenciaAtividade" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Há quanto tempo faz atividade:</label>
+                            <p id="tempoAtividade" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Locais que pratica atividade:</label>
+                            <p id="locaisPraticaAtividade" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Como soube do projeto:</label>
+                            <p id="comoSoubeProjeto" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Como é seu deslocamento:</label>
+                            <p id="tipoDeslocamento" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">O que acha do horário de aplicação:</label>
+                            <p id="opiniaoHorarioAplicacao" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações Médicas -->
+                <div class="form-section">
+                    <h4>
+                        <i class="bi bi-heart-pulse"></i>
+                        Informações Médicas
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Histórico Médico:</label>
+                            <div id="historicoMedico" class="form-control-plaintext">-</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Evolução de Saúde:</label>
+                            <div id="evolucaoSaude" class="form-control-plaintext">-</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Pressão Arterial:</label>
+                            <p id="pressao" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Ausculta:</label>
+                            <div id="ausculta" class="form-control-plaintext">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Observações -->
+                <div class="form-section">
+                    <h4>
+                        <i class="bi bi-journal-text"></i>
+                        Observações Gerais
+                    </h4>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Observações:</label>
+                            <div id="observacoes" class="form-control-plaintext">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informações do Sistema -->
+                <div class="form-section">
+                    <h4>
+                        <i class="bi bi-info-circle"></i>
+                        Informações do Sistema
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Data de Cadastro:</label>
+                            <p id="dataCriacao" class="form-control-plaintext">-</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Última Atualização:</label>
+                            <p id="dataUltimaAtualizacao" class="form-control-plaintext">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <h5>Carregando dados do paciente...</h5>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="text-center py-5" style="display: none;">
+            <i class="bi bi-exclamation-triangle display-1 text-danger mb-3"></i>
+            <h5 class="text-danger">Erro ao carregar dados do paciente</h5>
+            <p id="errorMessage" class="text-muted mb-3"></p>
+            <div>
+                <button class="btn btn-primary" onclick="loadPatientData()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Tentar Novamente
+                </button>
+                <a href="pacientes.html" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i>
+                    Voltar para Lista
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="mt-2 mb-0">Processando...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/endereco-brasil.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/detalhes-paciente.js"></script>
+</body>
+</html>

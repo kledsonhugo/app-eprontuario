@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes - Sistema de Prontuários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-heartbeat me-2"></i>
+                Sistema de Prontuários
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bars"></i> Menu
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.html"><i class="fas fa-home me-2"></i>Início</a></li>
+                            <li><a class="dropdown-item active" href="pacientes.html"><i class="fas fa-users me-2"></i>Pacientes</a></li>
+                            <li><a class="dropdown-item" href="estatisticas-simples.html"><i class="fas fa-chart-bar me-2"></i>Estatísticas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>
+                        <i class="fas fa-users text-primary me-2"></i>
+                        Lista de Pacientes
+                    </h2>
+                    <a href="novo-paciente.html" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Novo Paciente
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="searchInput" class="form-label">Filtrar por paciente:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" id="searchInput" class="form-control" 
+                                           placeholder="Digite o nome do paciente (busca sem distinção de maiúsculas/minúsculas e acentos)...">
+                                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sortBy" class="form-label">Ordenar por:</label>
+                                <select id="sortBy" class="form-select">
+                                    <option value="nome">Nome</option>
+                                    <option value="dataCriacao">Data de Cadastro</option>
+                                    <option value="idade">Idade</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sortOrder" class="form-label">Ordem:</label>
+                                <select id="sortOrder" class="form-select">
+                                    <option value="asc">Crescente</option>
+                                    <option value="desc">Decrescente</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading spinner -->
+        <div id="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-2 text-muted">Carregando pacientes...</p>
+        </div>
+
+        <!-- Erro -->
+        <div id="erro" class="alert alert-danger d-none" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <span id="mensagemErro">Erro ao carregar pacientes</span>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div id="resultsSummary" class="text-muted">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Patients Table -->
+        <div class="row">
+            <div class="col-12">
+                <div id="listaPacientes" class="d-none">
+                    <div id="patientsTable">
+                        <!-- Table will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Mensagem quando não há pacientes -->
+                <div id="semPacientes" class="text-center py-5 d-none">
+                    <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">Nenhum paciente encontrado</h5>
+                    <p class="text-muted">Comece cadastrando um novo paciente.</p>
+                    <a href="novo-paciente.html" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Cadastrar Primeiro Paciente
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <nav id="paginationNav" aria-label="Navegação de páginas">
+                    <!-- Pagination will be populated by JavaScript -->
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="mt-2 mb-0">Carregando pacientes...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Confirmar Exclusão
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir o paciente <strong id="deletePatientName"></strong>?</p>
+                    <p class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Esta ação não pode ser desfeita.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">
+                        <i class="bi bi-trash"></i>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/endereco-brasil.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/pacientes.js"></script>
+</body>
+</html>
