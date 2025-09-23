@@ -1,2 +1,0 @@
-// Configuration settings
-const API_BASE_URL = 'http://prontuario-api-1758591010.brazilsouth.azurecontainer.io:8080/api';

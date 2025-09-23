@@ -1,6 +1,6 @@
-# 🚀 Guia de Deploy na Azure - Sistema de Prontuários Médicos
+# 🚀 Deploy Simplificado na Azure - Sistema de Prontuários
 
-Este guia te ajudará a fazer o deploy da aplicação na Azure usando containers.
+**Arquitetura Otimizada:** ACR + ACI + Front Door
 
 ## 📋 Pré-requisitos
 
@@ -23,22 +23,20 @@ Este guia te ajudará a fazer o deploy da aplicação na Azure usando containers
 
 3. **Subscription ativa** na Azure com permissões para criar recursos
 
-## 🎯 Opções de Deploy
+## 🎯 Arquitetura Simplificada
 
-Você tem duas opções principais:
+Esta versão usa apenas **3 serviços Azure** essenciais:
 
-### 🌟 Opção 1: Azure Container Instances (Recomendado para desenvolvimento)
-- ✅ Mais simples e rápido
-- ✅ Menor custo
-- ❌ Menos recursos de scaling
+- **🗂️ Azure Container Registry (ACR)** - Armazenamento de imagens Docker
+- **📦 Azure Container Instances (ACI)** - Hospedagem serverless dos containers  
+- **🌐 Azure Front Door** - CDN global + SSL automático + Load Balancer
 
-### 🚀 Opção 2: Azure Container Apps (Recomendado para produção)
-- ✅ Auto-scaling
-- ✅ Mais recursos avançados
-- ✅ Melhor para produção
-- ❌ Mais complexo
+**✅ Vantagens:**
+- SSL gerenciado automaticamente
+- CDN global para performance mundial
+- Alta disponibilidade sem complexidade
 
-## 📝 Passo a Passo
+## 📝 Deploy em 6 Passos
 
 ### 1️⃣ Configurar Azure Container Registry
 
@@ -56,36 +54,42 @@ chmod +x *.sh
 ./02-build-and-push.sh
 ```
 
-### 3️⃣ Deploy (Escolha uma opção)
+### 3️⃣ Deploy dos Containers
 
-#### Para Container Instances:
 ```bash
 ./03-deploy-container-instances.sh
 ```
 
-#### Para Container Apps:
-```bash
-./04-deploy-container-apps.sh
-```
+**⚠️ Anote as URLs** dos containers geradas no final!
 
-### 4️⃣ Configurar URLs da API
-
-Após o deploy, você receberá as URLs. Use o script para atualizar:
+### 4️⃣ Configurar Azure Front Door
 
 ```bash
-./05-update-api-urls.sh https://sua-api-url-aqui
+./04-setup-azure-frontdoor.sh
 ```
 
-Depois rebuild e push o frontend:
+**⚠️ Anote a URL do Front Door** gerada no final!
+
+### 5️⃣ Corrigir Origens do Front Door
+
 ```bash
-# Rebuild frontend com novas URLs
-cd ..
-docker build -t acrprontuariomedical.azurecr.io/prontuario-web:latest ./ProntuarioMedico.Web/
-docker push acrprontuariomedical.azurecr.io/prontuario-web:latest
-
-# Atualizar container (Container Apps)
-az containerapp update --name prontuario-web --resource-group rg-prontuario-medical --image acrprontuariomedical.azurecr.io/prontuario-web:latest
+./05-fix-frontdoor-origins.sh
 ```
+
+### 6️⃣ Atualizar URLs da Aplicação
+
+```bash
+./06-update-all-urls.sh
+```
+
+## 🎉 Deploy Concluído!
+
+Após executar todos os scripts, sua aplicação estará disponível na URL do Front Door com:
+
+- ✅ **SSL automático** - Certificado gerenciado pela Azure
+- ✅ **CDN global** - Performance otimizada mundialmente  
+- ✅ **Alta disponibilidade** - SLA 99.95%
+- ✅ **Custo otimizado** - ~$88/mês
 
 ## 🔧 Testando Localmente
 
@@ -96,40 +100,29 @@ Antes do deploy na Azure, teste localmente:
 docker-compose up --build
 
 # Acessar:
-# Frontend: http://localhost:8080
+# Frontend: http://localhost:8080  
 # API: http://localhost:5135
 ```
 
 ## 📊 Monitoramento
 
-### Ver logs:
+### Ver logs dos containers:
 ```bash
-# Container Instances
+# API Container
 az container logs --resource-group rg-prontuario-medical --name prontuario-api-aci --follow
 
-# Container Apps
-az containerapp logs show --name prontuario-api --resource-group rg-prontuario-medical --follow
+# Web Container  
+az container logs --resource-group rg-prontuario-medical --name prontuario-web-aci --follow
 ```
 
-### Ver status:
+### Ver status dos recursos:
 ```bash
-# Container Instances
-az container show --resource-group rg-prontuario-medical --name prontuario-api-aci --query "containers[0].instanceView.currentState"
+# Status dos containers
+az container list --resource-group rg-prontuario-medical --output table
 
-# Container Apps
-az containerapp show --name prontuario-api --resource-group rg-prontuario-medical --query "properties.runningStatus"
+# Status do Front Door
+az afd profile show --resource-group rg-prontuario-medical --profile-name fd-prontuario-medical --query "deploymentStatus"
 ```
-
-## 💰 Estimativa de Custos
-
-### Container Instances:
-- API (1 vCPU, 1.5GB RAM): ~$30-40/mês
-- Web (0.5 vCPU, 1GB RAM): ~$15-20/mês
-- **Total estimado: $45-60/mês**
-
-### Container Apps:
-- API + Web: ~$20-40/mês (com auto-scaling)
-- **Total estimado: $20-40/mês**
 
 ## 🛠️ Comandos Úteis
 
@@ -138,106 +131,59 @@ az containerapp show --name prontuario-api --resource-group rg-prontuario-medica
 # 1. Build nova versão
 ./02-build-and-push.sh
 
-# 2. Atualizar containers
-az containerapp update --name prontuario-api --resource-group rg-prontuario-medical --image acrprontuariomedical.azurecr.io/prontuario-api:latest
+# 2. Restart containers para usar nova imagem
+az container restart --resource-group rg-prontuario-medical --name prontuario-api-aci
+az container restart --resource-group rg-prontuario-medical --name prontuario-web-aci
 ```
 
-### Escalar manualmente (Container Apps):
-```bash
-az containerapp update --name prontuario-api --resource-group rg-prontuario-medical --min-replicas 2 --max-replicas 5
-```
-
-### Parar containers (Container Instances):
+### Parar containers:
 ```bash
 az container stop --resource-group rg-prontuario-medical --name prontuario-api-aci
+az container stop --resource-group rg-prontuario-medical --name prontuario-web-aci
 ```
 
-### Deletar recursos:
+### Verificar URLs:
+```bash
+# URLs dos containers
+az container show --resource-group rg-prontuario-medical --name prontuario-api-aci --query "ipAddress.fqdn"
+az container show --resource-group rg-prontuario-medical --name prontuario-web-aci --query "ipAddress.fqdn"
+
+# URL do Front Door
+az afd endpoint show --resource-group rg-prontuario-medical --profile-name fd-prontuario-medical --endpoint-name eprontuario --query "hostName"
+```
+
+### Deletar recursos (limpeza):
 ```bash
 az group delete --name rg-prontuario-medical --yes --no-wait
 ```
 
-## 🔒 Configurar HTTPS (Opcional)
-
-### Configuração Automática Completa
-
-Para configurar HTTPS com certificado SSL automaticamente:
-
-```bash
-./09-deploy-https-complete.sh
-```
-
-### Configuração Manual (Passo a Passo)
-
-#### 6️⃣ Configurar Application Gateway
-```bash
-./06-setup-https.sh
-```
-
-#### 7️⃣ Configurar Certificado SSL
-```bash
-./07-configure-ssl.sh
-```
-
-#### 8️⃣ Atualizar URLs para HTTPS
-```bash
-./08-update-urls-https.sh
-```
-
-### Características do HTTPS
-
-- ✅ **Application Gateway** com SSL/TLS
-- ✅ **Certificado autoassinado** (ideal para testes)
-- ✅ **Redirecionamento HTTP → HTTPS** automático
-- ✅ **Health probes** configurados
-- ✅ **Load balancing** entre frontend e API
-
-### Para Produção
-
-Para usar em produção, substitua o certificado autoassinado por um certificado válido:
-
-1. Obtenha um certificado SSL válido (Let's Encrypt, CA comercial, etc.)
-2. Configure seu domínio personalizado
-3. Substitua o certificado no Application Gateway
-4. Atualize o Traffic Manager para usar HTTPS
-
-## 🔒 Segurança
-
-Para produção, considere:
-
-1. **Custom Domain + SSL**
-2. **Azure Key Vault** para secrets
-3. **Virtual Network** para isolamento
-4. **Application Gateway** para load balancing
-5. **Azure SQL Database** em vez de SQLite
 
 ## 🆘 Troubleshooting
 
 ### Problema: Container não inicia
 ```bash
 # Ver logs detalhados
-az containerapp logs show --name prontuario-api --resource-group rg-prontuario-medical --follow
+az container logs --resource-group rg-prontuario-medical --name prontuario-api-aci --follow
 
 # Verificar configuração
-az containerapp show --name prontuario-api --resource-group rg-prontuario-medical
+az container show --resource-group rg-prontuario-medical --name prontuario-api-aci
+```
+
+### Problema: Front Door não acessa containers
+```bash
+# Verificar origem configurada
+az afd origin list --resource-group rg-prontuario-medical --profile-name fd-prontuario-medical --origin-group-name api-origin-group
+
+# Testar conectividade direta ao container
+curl http://CONTAINER-URL/api/pacientes
 ```
 
 ### Problema: Frontend não consegue acessar API
 1. Verifique se as URLs foram atualizadas no frontend
-2. Verifique se a API está respondendo
+2. Teste a API diretamente: `curl FRONT-DOOR-URL/api/pacientes`
 3. Verifique configurações de CORS na API
 
-### Problema: Banco de dados perdido
-- Use Azure Database for PostgreSQL para persistência
-- Configure volumes persistentes
-
-## 📞 Suporte
-
-Para dúvidas sobre este guia, consulte:
-- [Documentação Azure Container Apps](https://docs.microsoft.com/azure/container-apps/)
-- [Documentação Azure Container Instances](https://docs.microsoft.com/azure/container-instances/)
-- [Azure CLI Reference](https://docs.microsoft.com/cli/azure/)
-
----
-
-**🎉 Boa sorte com seu deploy!**
+### Problema: SSL/HTTPS não funciona
+- O Front Door gerencia SSL automaticamente
+- Aguarde até 15 minutos para propagação
+- Verifique se está acessando a URL do Front Door (não do container)

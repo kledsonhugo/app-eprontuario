@@ -2,9 +2,7 @@
 
 Sistema web desenvolvido para gerenciar prontuários médicos de pacientes da Unidade Básica de Saúde (UBS) em Mauá, São Paulo.
 
-## 🏥 Sobre o Projeto
-
-Este sistema foi desenvolvido para auxiliar no controle e gerenciamento de prontuários médicos, facilitando o acompanhamento de saúde e histórico médico dos pacientes atendidos na UBS.
+O sistema está hospedado na **Microsoft Azure** com arquitetura de containers e CDN global, garantindo alta disponibilidade, segurança e performance.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -18,6 +16,27 @@ Este sistema foi desenvolvido para auxiliar no controle e gerenciamento de pront
 - **HTML5, CSS3, JavaScript** - Interface web responsiva
 - **Bootstrap 5.3** - Framework CSS para responsividade
 - **Bootstrap Icons** - Ícones da interface
+- **SSL:** Certificado gerenciado automaticamente
+- **CDN:** Distribuição global para melhor performance
+
+## 🚀 Infraestrutura utilizada
+
+### ☁️ Azure
+- **Azure Container Registry** - Armazenamento de imagens Docker
+- **Azure Container Instances** - Hospedagem de containers serverless
+- **Azure Front Door** - CDN global + SSL + Load Balancer
+- **Docker** - Containerização das aplicações
+
+### 💰 Custos de Infraestrutura
+
+| **Serviço Azure** | **Configuração** | **Custo Mensal (USD)** |
+|-------------------|------------------|------------------------|
+| **Azure Container Registry** | Basic (10GB storage) | $5.00 |
+| **Container Instances - API** | 1.0 vCPU, 1.5GB RAM | ~$31.00 |
+| **Container Instances - Web** | 0.5 vCPU, 1.0GB RAM | ~$16.00 |
+| **Azure Front Door** | Standard + SSL gerenciado | $35.00 |
+| **Bandwidth** | Baixo tráfego (<5GB/mês) | ~$1.00 |
+| **TOTAL MENSAL** | | **~$88.00** |
 
 ## 📋 Funcionalidades
 
@@ -64,13 +83,21 @@ Este sistema foi desenvolvido para auxiliar no controle e gerenciamento de pront
 - ✨ **Feedback visual** com toasts de sucesso/erro
 - 🔄 **Estados de carregamento** para melhor experiência
 
-## 🛠️ Como Executar
+## 🌐 Acesso Online
+
+O sistema está **hospedado na Azure** e pode ser acessado diretamente:
+- **URL:** https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net
+- **SSL:** Certificado válido e seguro
+- **Performance:** CDN global para acesso rápido mundial
+- **Disponibilidade:** Alta disponibilidade 24/7
+
+## 💻 Desenvolvimento Local
 
 ### Pré-requisitos
 - .NET 8.0 SDK
 - Python 3 (para servidor web do frontend)
 
-### 1. Executar a API (Backend)
+#### 1. Executar a API (Backend)
 
 ```bash
 # Navegar para o diretório da API
@@ -83,7 +110,7 @@ dotnet run
 A API estará disponível em: `http://localhost:5135`
 - Swagger UI: `http://localhost:5135/swagger`
 
-### 2. Executar o Frontend
+#### 2. Executar o Frontend
 
 ```bash
 # Navegar para o diretório do frontend
@@ -95,11 +122,6 @@ python3 -m http.server 8080
 
 O frontend estará disponível em: `http://localhost:8080`
 
-### 3. Primeiro Acesso
-
-1. Acesse: `http://localhost:8080/login.html`
-2. Use as credenciais:
-3. Após o login, será redirecionado para o dashboard principal
 
 ## 📱 Como Usar
 
@@ -267,9 +289,19 @@ app-eprontuario/
 ### Melhorias Técnicas
 - [ ] Testes automatizados
 - [ ] CI/CD pipeline
-- [ ] Dockerização
 - [ ] Monitoramento e métricas
 - [ ] Cache inteligente
+- [ ] Migração para banco de dados PostgreSQL
+
+### ☁️ Infraestrutura Azure
+- [x] **Containerização completa** com Docker
+- [x] **Azure Container Registry** para imagens
+- [x] **Azure Container Instances** serverless
+- [x] **Azure Front Door** com SSL gerenciado
+- [x] **CDN global** para performance mundial
+- [ ] Auto-scaling baseado em demanda
+- [ ] Monitoramento com Azure Monitor
+- [ ] Backup automatizado para Azure Storage
 
 ## 👥 Contribuição
 
