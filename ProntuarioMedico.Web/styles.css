@@ -297,3 +297,81 @@ body {
         transform: scale(1);
     }
 }
+
+/* Hamburger Menu Styles */
+.navbar-nav .dropdown-toggle {
+    font-size: 1.2rem;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: none;
+}
+
+.navbar-nav .dropdown-toggle:focus {
+    box-shadow: none;
+}
+
+.navbar-nav .dropdown-toggle .fa-bars {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.2s ease-in-out;
+}
+
+.navbar-nav .dropdown-toggle:hover .fa-bars {
+    color: #ffffff;
+}
+
+/* Remove dropdown arrow/caret from nav-link */
+.navbar-nav .nav-link::after {
+    display: none !important;
+}
+
+.navbar-nav .dropdown .nav-link {
+    font-size: 1.2rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.navbar-nav .dropdown .nav-link .fa-bars {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.2s ease-in-out;
+}
+
+.navbar-nav .dropdown .nav-link:hover .fa-bars {
+    color: #ffffff;
+}
+
+/* Dropdown menu positioning and animation */
+.dropdown-menu-end {
+    --bs-position: end;
+    right: 0;
+    left: auto;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    margin-top: 0.25rem;
+    min-width: 180px;
+}
+
+.dropdown-item {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.dropdown-item i {
+    width: 18px;
+    text-align: center;
+}
