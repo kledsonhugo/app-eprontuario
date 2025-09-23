@@ -1,4 +1,4 @@
-# # Sistema de Prontuário Médico - UBS Mauá
+# Sistema de Prontuário Médico - UBS Mauá
 
 Sistema web desenvolvido para gerenciar prontuários médicos de pacientes da Unidade Básica de Saúde (UBS) em Mauá, São Paulo.
 
@@ -21,35 +21,48 @@ Este sistema foi desenvolvido para auxiliar no controle e gerenciamento de pront
 
 ## 📋 Funcionalidades
 
-### Gerenciamento de Pacientes
+### 🔐 Sistema de Autenticação
+- ✅ **Login seguro** com credenciais validadas
+- ✅ **Proteção de todas as páginas** - acesso apenas após login
+- ✅ **Sessão persistente** com expiração automática (24h)
+- ✅ **Logout** com limpeza de sessão
+- ✅ **Redirecionamento automático** para login quando não autenticado
+- 👤 **Credenciais**: consulte o administrador
+
+### 👥 Gerenciamento de Pacientes
 - ✅ Cadastro de novos pacientes
 - ✅ Listagem de pacientes com busca e filtros
 - ✅ Visualização detalhada do paciente
 - ✅ Edição de dados do paciente
-- ✅ Exclusão de pacientes
+- ✅ **Exclusão inteligente** - impede deletar pacientes com prontuários
 - ✅ Busca por nome ou endereço
+- ✅ **Validação de integridade** de dados
 
-### Gerenciamento de Prontuários
+### 📋 Gerenciamento de Prontuários
 - ✅ Criação de prontuários médicos para pacientes
 - ✅ Visualização detalhada de prontuários
-- ✅ **NOVO**: Edição de prontuários existentes
+- ✅ **Edição completa** de prontuários existentes
 - ✅ Exclusão de prontuários
 - ✅ Listagem de prontuários por paciente
-- ✅ Navegação integrada entre pacientes e prontuários
+- ✅ **Navegação integrada** entre pacientes e prontuários
 
-### Informações Coletadas nos Prontuários
+### 📊 Informações Coletadas nos Prontuários
 - **Dados Pessoais**: Nome, idade, data de nascimento, endereço (automaticamente do paciente)
 - **Atividade Física**: Frequência, tempo de atividade, locais de prática, tipo de deslocamento
 - **Informações do Projeto**: Como soube do projeto, opinião sobre horários de aplicação
 - **Dados Médicos**: Histórico médico, evolução de saúde, pressão arterial, ausculta
 - **Observações**: Campo livre para anotações adicionais
 
-### Interface Responsiva
-- 📱 Otimizado para dispositivos móveis (celulares e tablets)
-- 💻 Funciona perfeitamente em desktops e notebooks
-- � Busca em tempo real
-- 🎨 **NOVO**: Menu de navegação padronizado em todas as páginas
-- � Acesso às estatísticas do sistema
+### 🎨 Interface e Navegação
+- 📱 **Totalmente responsivo** - otimizado para celulares, tablets e desktops
+- 🔍 **Busca em tempo real** com filtros inteligentes
+- 🎨 **Menu padronizado** em todas as páginas:
+  - 🏠 **Início**: Dashboard principal com estatísticas
+  - 👥 **Pacientes**: Lista e gerenciamento de pacientes  
+  - 📊 **Estatísticas**: Estatísticas detalhadas do sistema
+  - 👤 **Sair, NOME_USUÁRIO**: Logout com identificação do usuário
+- ✨ **Feedback visual** com toasts de sucesso/erro
+- 🔄 **Estados de carregamento** para melhor experiência
 
 ## 🛠️ Como Executar
 
@@ -82,27 +95,40 @@ python3 -m http.server 8080
 
 O frontend estará disponível em: `http://localhost:8080`
 
+### 3. Primeiro Acesso
+
+1. Acesse: `http://localhost:8080/login.html`
+2. Use as credenciais:
+3. Após o login, será redirecionado para o dashboard principal
+
 ## 📱 Como Usar
 
-### 1. Página Principal (Dashboard)
+### 1. Login e Autenticação
+- Acesse a página de login com design moderno
+- Insira as credenciais
+- O sistema manterá você logado por 24 horas
+- Para sair, clique em "Sair, [user]" no menu superior
+
+### 2. Página Principal
 - Visualize estatísticas gerais dos pacientes
 - Acesse ações rápidas para cadastro e busca
 - Veja os pacientes cadastrados recentemente
 
-### 2. Cadastrar Novo Paciente
-- Acesse "Novo Paciente" no menu ou dashboard
+### 3. Cadastrar Novo Paciente
+- Acesse "Pacientes" > "Novo Paciente" no menu
 - Preencha os dados obrigatórios (marcados com *)
 - Campos opcionais podem ser preenchidos conforme necessário
 - Clique em "Cadastrar Paciente" para salvar
 
-### 3. Listar Pacientes
+### 4. Listar e Gerenciar Pacientes
 - Acesse "Pacientes" no menu
 - Use a barra de busca para encontrar pacientes específicos
 - Ordene por nome, data de cadastro ou idade
 - Use os botões de ação para visualizar, editar ou excluir
+- **Proteção contra exclusão**: Pacientes com prontuários não podem ser deletados
 
-### 4. Visualizar Detalhes do Paciente
-- Clique no ícone "👁️" na lista de pacientes ou acesse diretamente
+### 5. Visualizar Detalhes do Paciente
+- Clique no ícone "👁️" na lista de pacientes
 - Visualize todas as informações pessoais do paciente
 - Veja a lista completa de prontuários médicos do paciente
 - Use os botões de ação para cada prontuário:
@@ -112,7 +138,7 @@ O frontend estará disponível em: `http://localhost:8080`
 - Acesse "Editar" para modificar dados pessoais do paciente
 - Crie novos prontuários diretamente da página do paciente
 
-### 5. **NOVO**: Editar Prontuários
+### 6. Editar Prontuários
 - Clique no botão "Editar" (✏️) em qualquer prontuário
 - Página de edição carrega automaticamente os dados existentes
 - Modifique qualquer campo do prontuário:
@@ -123,30 +149,28 @@ O frontend estará disponível em: `http://localhost:8080`
 - Clique em "Salvar Alterações" para confirmar
 - Retorna automaticamente para a página do paciente
 
-### 6. Criar Prontuários
+### 7. Criar Prontuários
 - Acesse via botão "Novo Prontuário" na página do paciente
 - Ou navegue diretamente pelo menu para "Criar Prontuário"
 - Selecione o paciente (pré-selecionado se vier da página do paciente)
 - Preencha as informações médicas e de atividade física
 - Salve para criar o novo prontuário
 
-### 7. Visualizar Prontuários
+### 8. Visualizar Prontuários
 - Clique no ícone "👁️" em qualquer prontuário
 - Veja todas as informações detalhadas
 - Informações organizadas por categorias
 - Navegação clara de volta ao paciente
 
-### 8. Editar Paciente
+### 9. Editar Paciente
 - Modifique os campos necessários dos dados pessoais
 - Use "Restaurar Dados" para reverter alterações
 - Clique em "Salvar Alterações" para confirmar
 
-### 9. **NOVO**: Navegação Integrada
-- Menu padronizado em todas as páginas com:
-  - 🏠 **Início**: Dashboard principal
-  - 👥 **Pacientes**: Lista e gerenciamento de pacientes  
-  - 📊 **Estatísticas**: Estatísticas do sistema
-- Navegação fluida entre pacientes e prontuários
+### 10. Navegação e Segurança
+- Menu padronizado em todas as páginas para fácil navegação
+- Proteção automática - redirecionamento para login se não autenticado
+- Feedback visual constante com mensagens de sucesso/erro
 - Botões "Voltar" inteligentes que retornam ao contexto anterior
 
 ## 🔧 Configuração
@@ -156,6 +180,13 @@ O sistema usa SQLite por padrão, criando automaticamente o arquivo `prontuario.
 
 ### CORS
 A API está configurada para aceitar requisições de qualquer origem durante o desenvolvimento. Para produção, configure URLs específicas em `Program.cs`.
+
+### Autenticação
+O sistema usa autenticação simples baseada em localStorage. Para produção, implemente:
+- JWT tokens
+- Hash de senhas
+- Validação no backend
+- Controle de sessão no servidor
 
 ## 📊 API Endpoints
 
@@ -172,18 +203,8 @@ A API está configurada para aceitar requisições de qualquer origem durante o 
 - `GET /api/prontuarios/{id}` - Obter prontuário por ID
 - `GET /api/prontuarios/paciente/{pacienteId}` - Listar prontuários de um paciente
 - `POST /api/prontuarios` - Criar novo prontuário
-- `PUT /api/prontuarios/{id}` - **NOVO**: Atualizar prontuário existente
+- `PUT /api/prontuarios/{id}` - Atualizar prontuário existente
 - `DELETE /api/prontuarios/{id}` - Excluir prontuário
-
-## 🔒 Segurança
-
-### Para Produção
-- Configurar HTTPS
-- Implementar autenticação e autorização
-- Validar e sanitizar todas as entradas
-- Configurar CORS adequadamente
-- Usar banco de dados seguro (não SQLite)
-- Implementar backup regular dos dados
 
 ## 📝 Estrutura do Projeto
 
@@ -201,17 +222,21 @@ app-eprontuario/
 │
 ├── ProntuarioMedico.Web/         # Frontend
 │   ├── js/                       # Scripts JavaScript
+│   │   ├── auth.js               # Sistema de autenticação
+│   │   ├── api.js                # Serviços de API
 │   │   ├── criar-prontuario.js   # Lógica de criação de prontuários
-│   │   ├── editar-prontuario.js  # **NOVO**: Lógica de edição de prontuários
+│   │   ├── editar-prontuario.js  # Lógica de edição de prontuários
 │   │   ├── detalhes-paciente.js  # Lógica de detalhes do paciente
+│   │   ├── pacientes.js          # Gerenciamento de pacientes
 │   │   └── ...                   # Outros scripts
+│   ├── login.html                # Página de autenticação
 │   ├── index.html                # Dashboard principal
 │   ├── pacientes.html            # Lista de pacientes
 │   ├── novo-paciente.html        # Cadastro de pacientes
 │   ├── detalhes-paciente-simples.html # Visualização de paciente
 │   ├── editar-paciente-simples.html   # Edição de paciente
 │   ├── criar-prontuario.html     # Criação de prontuários
-│   ├── editar-prontuario.html    # **NOVO**: Edição de prontuários
+│   ├── editar-prontuario.html    # Edição de prontuários
 │   ├── detalhes-prontuario.html  # Visualização de prontuários
 │   ├── estatisticas-simples.html # Estatísticas do sistema
 │   └── styles.css                # Estilos customizados
@@ -221,8 +246,8 @@ app-eprontuario/
 
 ## 🎯 Próximos Passos
 
-- [ ] Implementar autenticação de usuários
-- [ ] Adicionar relatórios e estatísticas avançadas
+### Funcionalidades Planejadas
+- [ ] Relatórios e estatísticas avançadas
 - [ ] Exportação de dados em PDF
 - [ ] Agendamento de consultas
 - [ ] Histórico de alterações em prontuários
@@ -232,25 +257,19 @@ app-eprontuario/
 - [ ] Filtros avançados na listagem de prontuários
 - [ ] Dashboard com gráficos interativos
 
-## 🆕 Atualizações Recentes (v2.0)
+### Melhorias de Segurança
+- [ ] Autenticação JWT no backend
+- [ ] Controle de permissões por usuário
+- [ ] Hash de senhas
+- [ ] Logs de auditoria
+- [ ] Two-factor authentication
 
-### ✨ Novas Funcionalidades
-- **Edição de Prontuários**: Agora é possível editar prontuários existentes
-- **Navegação Integrada**: Menu padronizado em todas as páginas
-- **Interface Aprimorada**: Melhor fluxo de navegação entre pacientes e prontuários
-
-### 🔧 Melhorias Técnicas
-- Novo endpoint PUT para atualização de prontuários
-- Script JavaScript dedicado para edição (`editar-prontuario.js`)
-- Validação aprimorada de formulários
-- Tratamento robusto de erros
-- Feedback visual com toasts de sucesso/erro
-
-### 🎨 Melhorias de UX/UI
-- Menu de navegação consistente em todas as páginas
-- Botões "Voltar" inteligentes que retornam ao contexto anterior
-- Informações do paciente visíveis durante edição de prontuários
-- Loading states e feedback visual aprimorados
+### Melhorias Técnicas
+- [ ] Testes automatizados
+- [ ] CI/CD pipeline
+- [ ] Dockerização
+- [ ] Monitoramento e métricas
+- [ ] Cache inteligente
 
 ## 👥 Contribuição
 

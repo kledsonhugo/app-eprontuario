@@ -411,6 +411,29 @@ async function handleDelete() {
     try {
         Utils.showLoading();
         
+        // Verificar se o paciente possui prontuários
+        console.log('Verificando prontuários do paciente:', deletePatientId);
+        const response = await fetch(`http://localhost:5135/api/prontuarios/paciente/${deletePatientId}`);
+        
+        if (!response.ok) {
+            throw new Error('Erro ao verificar prontuários do paciente');
+        }
+        
+        const prontuarios = await response.json();
+        console.log('Prontuários encontrados:', prontuarios.length);
+        
+        if (prontuarios.length > 0) {
+            Utils.hideLoading();
+            const patientName = document.getElementById('deletePatientName').textContent;
+            Utils.showToast(`Não é possível excluir o paciente "${patientName}" pois existem ${prontuarios.length} prontuário${prontuarios.length !== 1 ? 's' : ''} cadastrado${prontuarios.length !== 1 ? 's' : ''} para este paciente.`, 'warning');
+            
+            // Hide modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            modal.hide();
+            deletePatientId = null;
+            return;
+        }
+        
         await apiService.deletePaciente(deletePatientId);
         
         Utils.showToast('Paciente excluído com sucesso', 'success');
