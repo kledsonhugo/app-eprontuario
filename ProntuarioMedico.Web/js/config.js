@@ -1,2 +1,2 @@
-// Configuração da API
-const API_BASE_URL = 'http://localhost:5135/api';
+// Configuration settings
+const API_BASE_URL = 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';

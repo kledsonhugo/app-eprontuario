@@ -1,0 +1,36 @@
+# Arquivos e pastas a serem ignorados durante o build do Docker
+
+# Arquivos de desenvolvimento
+.git/
+.gitignore
+README.md
+README_*.md
+
+# Logs
+*.log
+logs/
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Node modules (se houver)
+node_modules/
+npm-debug.log*
+
+# Arquivos do VS Code
+.vscode/
+
+# Arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+
+# Arquivos de build
+bin/
+obj/
+out/
+
+# Arquivos de banco local
+*.db
+*.db-*

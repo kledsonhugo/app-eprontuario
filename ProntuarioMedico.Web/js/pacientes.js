@@ -413,7 +413,7 @@ async function handleDelete() {
         
         // Verificar se o paciente possui prontuários
         console.log('Verificando prontuários do paciente:', deletePatientId);
-        const response = await fetch(`http://localhost:5135/api/prontuarios/paciente/${deletePatientId}`);
+        const response = await fetch(`https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/prontuarios/paciente/${deletePatientId}`);
         
         if (!response.ok) {
             throw new Error('Erro ao verificar prontuários do paciente');

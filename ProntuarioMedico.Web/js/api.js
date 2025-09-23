@@ -1,5 +1,5 @@
 // API Configuration and Helper Functions
-const API_BASE_URL = 'http://localhost:5135/api';
+const API_BASE_URL = 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
 
 class ApiService {
     constructor() {

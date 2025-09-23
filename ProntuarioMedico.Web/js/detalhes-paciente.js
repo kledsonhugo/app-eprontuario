@@ -30,7 +30,7 @@ async function loadPatientData(patientId) {
         
         console.log('Chamando API diretamente para obter paciente...');
         // Usando fetch diretamente para evitar problemas com apiService
-        const apiUrl = `http://localhost:5135/api/pacientes/${patientId}`;
+        const apiUrl = `https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/pacientes/${patientId}`;
         console.log('URL da API:', apiUrl);
         
         const response = await fetch(apiUrl);

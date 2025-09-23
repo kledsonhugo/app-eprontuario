@@ -1,5 +1,5 @@
 // Configuração da API
-const API_BASE_URL = 'http://localhost:5135/api';
+const API_BASE_URL = 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
 
 // Elementos do DOM
 const loading = document.getElementById('loading');
