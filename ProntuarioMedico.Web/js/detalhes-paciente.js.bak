@@ -30,7 +30,7 @@ async function loadPatientData(patientId) {
         
         console.log('Chamando API diretamente para obter paciente...');
         // Usando fetch diretamente para evitar problemas com apiService
-        const apiUrl = `https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/pacientes/${patientId}`;
+        const apiUrl = `http://prontuario-api-1758591010.brazilsouth.azurecontainer.io:8080/api/pacientes/${patientId}`;
         console.log('URL da API:', apiUrl);
         
         const response = await fetch(apiUrl);

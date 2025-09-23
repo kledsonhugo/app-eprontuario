@@ -64,7 +64,7 @@
                 }
                 
                 console.log('Fazendo requisição...');
-                const response = await fetch(`https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/pacientes/${patientId}`);
+                const response = await fetch(`http://prontuario-api-1758591010.brazilsouth.azurecontainer.io:8080/api/pacientes/${patientId}`);
                 
                 console.log('Response status:', response.status);
                 
@@ -278,7 +278,7 @@
                 }
                 
                 // Make API call
-                const response = await fetch(`https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/pacientes/${currentPatient.id}`, {
+                const response = await fetch(`http://prontuario-api-1758591010.brazilsouth.azurecontainer.io:8080/api/pacientes/${currentPatient.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
