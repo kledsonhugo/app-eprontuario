@@ -1,5 +1,12 @@
-// API Configuration and Helper Functions
-const API_BASE_URL = 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+// API Configuration and Helper Functions - Auto-detect environment
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+const API_BASE_URL = isLocalhost 
+    ? 'http://localhost:5135/api'
+    : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+
+console.log('API Service - Environment:', isLocalhost ? 'Development (Local)' : 'Production (Azure)');
+console.log('API Service - Using API URL:', API_BASE_URL);
 
 class ApiService {
     constructor() {
