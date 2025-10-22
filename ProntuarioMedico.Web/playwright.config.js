@@ -20,15 +20,19 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        executablePath: '/usr/bin/chromium-browser',
+      },
     },
   ],
 
-  webServer: {
-    command: 'docker compose up --build',
-    url: 'http://localhost:8080',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-    cwd: '..',
-  },
+  // WebServer configuration commented out - start services manually before running tests
+  // webServer: {
+  //   command: 'docker compose up --build',
+  //   url: 'http://localhost:8080',
+  //   reuseExistingServer: !process.env.CI,
+  //   timeout: 120000,
+  //   cwd: '..',
+  // },
 });
