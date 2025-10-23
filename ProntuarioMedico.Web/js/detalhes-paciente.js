@@ -29,8 +29,14 @@ async function loadPatientData(patientId) {
         showLoadingState();
         
         console.log('Chamando API diretamente para obter paciente...');
-        // Usando fetch diretamente para evitar problemas com apiService
-        const apiUrl = `https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/pacientes/${patientId}`;
+        // Usar detecção automática de ambiente
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_BASE_URL = isLocalhost 
+            ? 'http://localhost:5135/api'
+            : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+        
+        const apiUrl = `${API_BASE_URL}/pacientes/${patientId}`;
+        console.log('Environment:', isLocalhost ? 'Development (Local)' : 'Production (Azure)');
         console.log('URL da API:', apiUrl);
         
         const response = await fetch(apiUrl);

@@ -413,7 +413,14 @@ async function handleDelete() {
         
         // Verificar se o paciente possui prontuários
         console.log('Verificando prontuários do paciente:', deletePatientId);
-        const response = await fetch(`https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api/prontuarios/paciente/${deletePatientId}`);
+        
+        // Usar detecção automática de ambiente
+        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const API_BASE_URL = isLocalhost 
+            ? 'http://localhost:5135/api'
+            : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+        
+        const response = await fetch(`${API_BASE_URL}/prontuarios/paciente/${deletePatientId}`);
         
         if (!response.ok) {
             throw new Error('Erro ao verificar prontuários do paciente');

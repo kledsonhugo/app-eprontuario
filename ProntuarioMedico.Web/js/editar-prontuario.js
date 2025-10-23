@@ -1,5 +1,11 @@
-// Configuração da API
-const API_BASE_URL = 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+// Configuração da API - Detecção automática de ambiente
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_BASE_URL = isLocalhost 
+    ? 'http://localhost:5135/api'
+    : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+
+console.log('Editar Prontuário - Environment:', isLocalhost ? 'Development (Local)' : 'Production (Azure)');
+console.log('Editar Prontuário - Using API URL:', API_BASE_URL);
 
 // Elementos do DOM
 const loading = document.getElementById('loading');

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste de API</title>
+</head>
+<body>
+    <div id="resultado">Testando...</div>
+    
+    <script>
+        async function testarAPI() {
+            try {
+                console.log('Iniciando teste...');
+                
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const API_BASE_URL = isLocalhost 
+                    ? 'http://localhost:5135/api'
+                    : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+                
+                console.log('API URL:', API_BASE_URL);
+                
+                const url = `${API_BASE_URL}/prontuarios/10`;
+                console.log('Fazendo requisição para:', url);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Dados recebidos:', data);
+                
+                document.getElementById('resultado').innerHTML = `
+                    <h3>Sucesso!</h3>
+                    <p>Status: ${response.status}</p>
+                    <p>Prontuário ID: ${data.id}</p>
+                    <p>Paciente: ${data.pacienteNome}</p>
+                `;
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultado').innerHTML = `
+                    <h3>Erro!</h3>
+                    <p style="color: red;">${error.message}</p>
+                `;
+            }
+        }
+        
+        // Executar quando a página carregar
+        document.addEventListener('DOMContentLoaded', testarAPI);
+    </script>
+</body>
+</html>

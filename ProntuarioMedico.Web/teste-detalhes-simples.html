@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Detalhes Prontuário</title>
+</head>
+<body>
+    <div id="loading">Carregando...</div>
+    <div id="erro" style="display: none; color: red;"></div>
+    <div id="conteudo" style="display: none;"></div>
+    
+    <script>
+        console.log('Script iniciado');
+        
+        // Carregar dados ao inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM carregado, iniciando carregamento do prontuário');
+            carregarProntuario();
+        });
+        
+        async function carregarProntuario() {
+            try {
+                console.log('Iniciando carregamento...');
+                
+                // Obter ID do prontuário da URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const prontuarioId = urlParams.get('id');
+                console.log('Prontuário ID:', prontuarioId);
+                
+                if (!prontuarioId) {
+                    throw new Error('ID do prontuário não fornecido na URL');
+                }
+                
+                // Configurar API URL
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const API_BASE_URL = isLocalhost 
+                    ? 'http://localhost:5135/api'
+                    : 'https://eprontuario-e6ftdrftcdaqbycy.b02.azurefd.net/api';
+                
+                console.log('Environment:', isLocalhost ? 'Local' : 'Azure');
+                console.log('API URL:', API_BASE_URL);
+                
+                // Fazer requisição
+                const url = `${API_BASE_URL}/prontuarios/${prontuarioId}`;
+                console.log('Fazendo requisição para:', url);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const prontuario = await response.json();
+                console.log('Dados do prontuário:', prontuario);
+                
+                // Exibir dados
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('conteudo').style.display = 'block';
+                document.getElementById('conteudo').innerHTML = `
+                    <h2>Prontuário #${prontuario.id}</h2>
+                    <p><strong>Paciente:</strong> ${prontuario.pacienteNome}</p>
+                    <p><strong>Cidade:</strong> ${prontuario.paciente.cidade}</p>
+                    <p><strong>Pressão:</strong> ${prontuario.pressao}</p>
+                    <p><strong>Status:</strong> Carregado com sucesso!</p>
+                `;
+                
+            } catch (error) {
+                console.error('Erro ao carregar prontuário:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('erro').style.display = 'block';
+                document.getElementById('erro').innerHTML = `
+                    <h3>Erro ao carregar prontuário</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
