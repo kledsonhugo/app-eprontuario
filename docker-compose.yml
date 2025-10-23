@@ -4,8 +4,8 @@ services:
   # API Backend
   prontuario-api:
     build:
-      context: ./ProntuarioMedico.Api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./ProntuarioMedico.Api/Dockerfile
     container_name: prontuario-api
     ports:
       - "5135:8080"
@@ -28,8 +28,8 @@ services:
   # Frontend Web
   prontuario-web:
     build:
-      context: ./ProntuarioMedico.Web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./ProntuarioMedico.Web/Dockerfile
     container_name: prontuario-web
     ports:
       - "8080:80"

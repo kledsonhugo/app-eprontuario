@@ -122,6 +122,35 @@ python3 -m http.server 8080
 
 O frontend estará disponível em: `http://localhost:8080`
 
+### 3. Executar Testes de Interface
+
+O projeto inclui testes automatizados de interface web usando Playwright:
+
+```bash
+# Navegar para o diretório do frontend
+cd ProntuarioMedico.Web
+
+# Instalar dependências e configurar testes (primeira vez)
+./setup-tests.sh
+
+# Com a API e o frontend rodando, executar os testes
+npm test
+
+# Executar testes com interface visual
+npm run test:ui
+
+# Ver relatório dos testes
+npm run test:report
+```
+
+📋 **Cobertura dos Testes:**
+- ✅ Autenticação (login, logout, proteção de rotas)
+- ✅ Gerenciamento de pacientes (criar, listar, visualizar, editar, buscar)
+- ✅ Prontuários médicos (criar, visualizar, editar)
+- ✅ Dashboard e navegação
+
+Veja mais detalhes em [`ProntuarioMedico.Web/tests/README.md`](ProntuarioMedico.Web/tests/README.md)
+
 
 ## 📱 Como Usar
 
@@ -287,7 +316,7 @@ app-eprontuario/
 - [ ] Two-factor authentication
 
 ### Melhorias Técnicas
-- [ ] Testes automatizados
+- [x] **Testes automatizados de interface web** com Playwright
 - [ ] CI/CD pipeline
 - [ ] Monitoramento e métricas
 - [ ] Cache inteligente
